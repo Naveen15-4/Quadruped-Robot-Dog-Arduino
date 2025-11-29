@@ -16,7 +16,7 @@ To make the robot walk, we cannot simply tell the servos to move to random angle
 
 I derived the geometry using the **Law of Cosines** to solve the 2-Link planar arm problem for each leg.
 
-![Inverse Kinematics Derivation](Inverse_Kinematics.jpg)
+![Inverse Kinematics Derivation](Demo_Pics/Inverse_Kinematics.jpg)
 
 ### 1. Leg Geometry
 Given a target height $C$ (vertical distance from hip to ground) and leg segment lengths:
