@@ -1,2 +1,50 @@
-# Quadruped-Robot-Dog-Arduino
-Inverse Kinematics based Quadruped Robot using Arduino. A low-cost, 3D-printed quadruped robot running custom Inverse Kinematics algorithms on an Arduino
+# Quadruped Robot Dog 
+
+This project is a design and implementation of a 4-legged (quadruped) robot dog using 3D printed parts and Arduino control. The core of the project involves calculating **Inverse Kinematics (IK)** to map Cartesian coordinates $(x, y)$ in space to specific servo angles for the leg joints.
+
+![Robot Dog Prototype](IMG_ECBDD04C-4A83-49B4-9AE8-58C532E7D616.jpg)
+
+## 🔧 Hardware Specs
+* **Microcontroller:** Arduino Uno / Nano
+* **Servo Driver:** PCA9685 16-Channel 12-bit PWM Driver (I2C)
+* **Actuators:** 8x MG90S Metal Gear Micro Servos (2 per leg)
+* **Power:** External 5V High-Current Supply
+* **Body:** Custom 3D Printed PLA chassis and linkage system
+
+## 📐 The Math: Inverse Kinematics
+To make the robot walk, we cannot simply tell the servos to move to random angles. We must define a path for the foot (end-effector) to follow and calculate the joint angles required to reach that point.
+
+I derived the geometry using the **Law of Cosines** to solve the 2-Link planar arm problem for each leg.
+
+![Inverse Kinematics Derivation](Inverse_Kinematics.jpg)
+
+### 1. Leg Geometry
+Given a target height $C$ (vertical distance from hip to ground) and leg segment lengths:
+* $L_1$ (Thigh) = 12.2 cm
+* $L_2$ (Shin) = 11.5 cm
+
+We calculate the hip angle ($A$) and knee angle ($B$) using the Law of Cosines:
+
+$$\cos(A) = \frac{L_1^2 + C^2 - L_2^2}{2 \cdot L_1 \cdot C}$$
+
+$$\cos(B) = \frac{L_1^2 + L_2^2 - C^2}{2 \cdot L_1 \cdot L_2}$$
+
+### 2. Trajectory Planning
+To simulate a walking gait, the foot follows a semi-circular path defined by the equation of a circle:
+
+$$y = \sqrt{r^2 - x^2}$$
+
+Where:
+* $x$ is the horizontal step distance.
+* $y$ is the vertical step height (lift).
+* $r$ is the radius of the step.
+
+As the foot moves horizontally by $\delta x$, the inverse kinematics engine recalculates the new required angles $\theta_{hip}$ and $\theta_{knee}$ in real-time to keep the foot on the trajectory.
+
+## Code Overview
+The software utilizes the `Adafruit_PWMServoDriver` library to communicate with the PCA9685 via I2C. This allows for smooth control of all 8 servos simultaneously using only 2 pins on the Arduino.
+
+## Future Improvements
+* Implementation of full Trot and Creep gaits.
+* Integration of an IMU (Gyroscope) for self-balancing.
+* Wireless control via Bluetooth/RF.
