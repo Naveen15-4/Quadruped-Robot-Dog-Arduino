@@ -74,7 +74,7 @@ Requires customization based on:
 
 Servo differences (torque, speed, travel range).
 
--Best practice: first run dog_with_pot_control to obtain calibrated parameters, then integrate those values into leg_movement for accurate IK execution.
+- Best practice: first run dog_with_pot_control to obtain calibrated parameters, then integrate those values into leg_movement for accurate IK execution.
 
 ## Future Improvements
 * Implementation of full Trot and Creep gaits.
