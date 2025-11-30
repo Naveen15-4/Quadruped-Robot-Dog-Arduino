@@ -44,6 +44,38 @@ As the foot moves horizontally by $\delta x$, the inverse kinematics engine reca
 ## Code Overview
 The software utilizes the `Adafruit_PWMServoDriver` library to communicate with the PCA9685 via I2C. This allows for smooth control of all 8 servos simultaneously using only 2 pins on the Arduino.
 
+### dog_with_pot_control
+This script is designed for servo calibration and testing:
+
+Uses a potentiometer to manually control leg motion.
+
+Helps determine the minimum and maximum travel angles for each servo.
+
+Useful for load testing to evaluate how much weight the robot can carry (limited by servo quality).
+
+Compatible with different servo models, but ensure you update:
+
+Servo frequency in the driver settings.
+
+Min/max angle values in the code.
+
+-Think of this as the diagnostic tool — it lets you experimentally verify servo limits before moving on to gait control.
+
+### leg_movement
+This script provides the inverse kinematics (IK) framework for robot locomotion:
+
+Implements trajectory planning for walking gaits.
+
+Calculates hip and knee angles from Cartesian foot positions in real time.
+
+Requires customization based on:
+
+3D printed part tolerances (geometry may vary).
+
+Servo differences (torque, speed, travel range).
+
+-Best practice: first run dog_with_pot_control to obtain calibrated parameters, then integrate those values into leg_movement for accurate IK execution.
+
 ## Future Improvements
 * Implementation of full Trot and Creep gaits.
 * Integration of an IMU (Gyroscope) for self-balancing.
